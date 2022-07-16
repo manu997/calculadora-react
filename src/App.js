@@ -25,7 +25,48 @@ class App extends Component {
   }
 
   operate = () => {
-
+    var operationsParts = this.state.number.split(" ");
+    if (operationsParts[2] !== "") { //Check if there is a second number to operate
+      switch (operationsParts[1]) {  //Index [1] of the array will always be the mathematical sign
+        case "+":
+          this.setState({
+            number: parseFloat(operationsParts[0]) + parseFloat(operationsParts[2]),
+            initial: true //After showing the result, the first number introduced will be initial
+          })
+          break;
+        case "-":
+          this.setState({
+            number: parseFloat(operationsParts[0]) - parseFloat(operationsParts[2]),
+            initial: true //After showing the result, the first number introduced will be initial
+          })
+          break;
+        case "X":
+          this.setState({
+            number: parseFloat(operationsParts[0]) * parseFloat(operationsParts[2]),
+            initial: true //After showing the result, the first number introduced will be initial
+          })
+          break;
+        case "/":
+          if (operationsParts[2] !== 0) {
+            this.setState({
+              number: parseFloat(operationsParts[0]) / parseFloat(operationsParts[2]),
+              initial: true //After showing the result, the first number introduced will be initial
+            })
+          } else {
+            alert("Divide by zero is not deterministic.")
+            this.setState({
+              number: 0,
+              initial: true
+            })
+          }
+          break;
+        default:
+          alert("Wrong operation format.");
+          break;
+      }
+    } else {
+      alert("Wrong operation format.");
+    }
   }
 
   reset = () => {
@@ -63,7 +104,9 @@ class App extends Component {
           <Col><StyledButton onClick={this.updateDisplay}> - </StyledButton></Col>
         </Row>
         <Row>
-          <Col xs={{ size: 9 }}><StyledButton onClick={this.operate}>=</StyledButton></Col>
+          <Col><StyledButton onClick={this.updateDisplay}>0</StyledButton></Col>
+          <Col><StyledButton onClick={this.updateDisplay}>.</StyledButton></Col>
+          <Col><StyledButton onClick={this.operate}>=</StyledButton></Col>
           <Col><StyledButton onClick={this.updateDisplay}> + </StyledButton></Col>
         </Row>
       </Container>
